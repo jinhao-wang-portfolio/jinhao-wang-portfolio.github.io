@@ -1,12 +1,8 @@
 /* =========================================================
-   INSTALLATION: INDUSTRIAL METABOLISM CONVEYOR
-   精确校准参数：
-   - 机械消隐透明度：44%
-   - 履带厚度：4px 发丝线
-   - 漏斗：87px 宽 / 16px 深 / 材料间隙 10px
-   - 输出口：60px 高 / 离轨 0px 贴合
-   - 机械微震：1.9px
-   - 字块：56×56px 实体方块 (Noto Serif SC, #6c6b69, 4.0px 滤镜)
+   INSTALLATION: INDUSTRIAL METABOLISM CONVEYOR (V2 修复版)
+   - 修复：装置紧凑上移，紧贴首图
+   - 修复：履带全屏自适应贯穿 (Full-Bleed Responsive)
+   - 修复：重力跌落原地直坠，彻底解决“往左瞬移”Bug
    ========================================================= */
 
 :root {
@@ -15,25 +11,26 @@
     --vibe-amp: 1.9px;
 }
 
+/* 整个装置往上靠紧，去除大片无用空白 */
 .installation-section {
     width: 100%;
-    min-height: 75vh;
+    min-height: auto;
     background: var(--gallery-bg);
     color: #111111;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 60px 4vw 90px;
+    justify-content: flex-start;
+    padding: 10px 24px 60px; /* 顶部大幅度上提 */
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
 }
 
-/* 主机械舞台 */
+/* 履带宽度全屏自适应自左向右贯穿 */
 .stage-container {
-    width: 1080px;
-    max-width: 94vw;
+    width: 100%;
+    max-width: 1440px;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
@@ -41,10 +38,7 @@
     padding-bottom: 50px;
 }
 
-/* 
-   左侧消隐进料机身：
-   透明度 44%，带 1.9px 工频微震
-*/
+/* 左侧消隐进料机 */
 .intake-apparatus {
     width: 87px;
     display: flex;
@@ -63,7 +57,7 @@
     100% { transform: translateY(calc(-1 * var(--vibe-amp))) rotate(0.18deg); }
 }
 
-/* 进料碎片 (贴紧 10px 间隙) */
+/* 进料碎片 (贴紧 10px) */
 .geometric-shards {
     position: absolute;
     top: -24px;
@@ -106,7 +100,7 @@
     100% { transform: translateY(-3px) rotate(5deg); }
 }
 
-/* 阔口浅盘漏斗 (87px 宽 / 16px 深) */
+/* 漏斗 (87px 宽 / 16px 深) */
 .hopper-top {
     width: 87px;
     height: 16px;
@@ -116,7 +110,7 @@
     box-sizing: border-box;
 }
 
-/* 机颈与三颗微铆钉 */
+/* 机颈与铆钉 */
 .machine-neck {
     width: 46px;
     height: 14px;
@@ -148,7 +142,7 @@
     box-sizing: border-box;
 }
 
-/* 输出闸门 (高度 60px / 离轨 0px 贴合) */
+/* 输出闸门 (高度 60px / 离轨 0px) */
 .output-gate {
     position: absolute;
     right: -1px;
@@ -160,7 +154,7 @@
     box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.7);
 }
 
-/* 4px 发丝级微轨 */
+/* 4px 自适应弹性履带 (右侧拉通到底) */
 .conveyor-assembly {
     flex-grow: 1;
     height: 4px;
@@ -192,7 +186,7 @@
         rgba(20, 20, 20, 0.25) 14px, 
         rgba(20, 20, 20, 0.25) 15.5px
     );
-    animation: belt-glide 0.5s linear infinite;
+    animation: belt-glide 0.3s linear infinite; /* 加快履带滚动动效 */
 }
 
 @keyframes belt-glide {
@@ -214,7 +208,7 @@
     z-index: 15;
     top: -9px;
     opacity: var(--wire-opacity);
-    animation: wheel-rotate 1.1s linear infinite;
+    animation: wheel-rotate 0.6s linear infinite;
 }
 
 .wheel-left { left: 0px; }
@@ -236,10 +230,7 @@
     pointer-events: none;
 }
 
-/* 
-   核心主体：56×56px 实体方块文字
-   方案 C：Noto Serif SC + 2H 极淡浅灰 (#6c6b69) + 4.0px 炭粒滤镜
-*/
+/* 56×56px 实体方块文字 */
 .word-block {
     position: absolute;
     bottom: 0;
@@ -262,18 +253,15 @@
     will-change: transform, opacity;
 }
 
-/* 最右端重力倾角倒下跌落 */
+/* 下坠关键：纯靠 CSS 动画过渡，不再强制覆盖 X 坐标 */
 .word-block.falling {
-    transition: 
-        transform 0.42s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
-        opacity 0.42s ease;
-    transform: translate3d(22px, 110px, 0) rotate(58deg) !important;
+    transition: transform 0.45s cubic-bezier(0.5, 0, 0.8, 0.3), opacity 0.45s ease;
     opacity: 0 !important;
 }
 
 @media (max-width: 768px) {
     .installation-section {
-        padding: 40px 16px 60px;
+        padding: 10px 12px 40px;
     }
     .word-block {
         width: 44px;
