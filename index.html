@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=10">
+    <link rel="stylesheet" href="style.css?v=11">
     <link rel="stylesheet" href="installation/undercarriage.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
@@ -78,28 +78,66 @@
 
 
     <!-- ========================================
-         INSTALLATION: GRAPHIC CARD DEALER (第二屏)
+         INSTALLATION: METABOLISM CONVEYOR (第二屏：代谢流水线装置)
          ======================================== -->
 
     <section class="installation-section">
 
-        <!-- 顶部水平集群：95px 极简哑光圆盘 + 无框散乱废牌堆 -->
-        <div class="dealer-top-cluster">
-            <div class="dealer-chassis-stage">
-                <!-- 纯俯视极简哑光圆盘 -->
-                <div id="dealer-slot" class="dealer-minimal-disc">
-                    <!-- 15% 极隐蔽出牌凹痕狭缝 -->
-                    <div class="dealer-slot"></div>
+        <div class="stage-container">
+
+            <!-- 左侧进料消隐机身 -->
+            <div class="intake-apparatus">
+                <!-- 贴紧 10px 进料碎片 -->
+                <div class="geometric-shards">
+                    <div class="shard shard-1"></div>
+                    <div class="shard shard-2"></div>
+                    <div class="shard shard-3"></div>
+                </div>
+
+                <!-- 阔口浅盘漏斗 (87px 宽 / 16px 深) -->
+                <div class="hopper-top"></div>
+
+                <!-- 机颈与三颗微铆钉 -->
+                <div class="machine-neck">
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                </div>
+
+                <!-- 底座与贴轨输出口 (60px 高 / 0px 间隙) -->
+                <div class="machine-base">
+                    <div class="output-gate"></div>
                 </div>
             </div>
 
-            <!-- 无框自由散乱废牌堆 -->
-            <div id="discard-free-pile" class="discard-free-pile"></div>
-        </div>
+            <!-- 4px 发丝级微轨与双端 [X] 轮 -->
+            <div class="conveyor-assembly" id="conveyor-assembly">
+                <div class="belt-track">
+                    <div class="belt-texture"></div>
+                </div>
 
-        <!-- 牌桌网格 -->
-        <div class="dealer-table">
-            <div id="cards-grid" class="cards-grid"></div>
+                <!-- 左端 [X] 轮 -->
+                <div class="wheel-hub wheel-left">
+                    <svg viewBox="0 0 40 40">
+                        <line x1="9" y1="9" x2="31" y2="31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="31" y1="9" x2="9" y2="31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <!-- 右端 [X] 轮 -->
+                <div class="wheel-hub wheel-right">
+                    <svg viewBox="0 0 40 40">
+                        <line x1="9" y1="9" x2="31" y2="31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="31" y1="9" x2="9" y2="31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <!-- 方块文字输送滑轨通道 -->
+                <div class="track-runway" id="track-runway"></div>
+            </div>
+
         </div>
 
     </section>
@@ -136,7 +174,7 @@
         }, { passive: true });
     </script>
 
-    <!-- 极简发牌与整席汇聚回收逻辑 -->
+    <!-- 侧视流水线代谢推进逻辑 -->
     <script src="installation/undercarriage.js"></script>
 
 </body>
