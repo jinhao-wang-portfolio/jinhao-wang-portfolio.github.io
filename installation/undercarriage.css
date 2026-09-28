@@ -259,16 +259,76 @@
     opacity: 0 !important;
 }
 
+/* =========================================================
+   移动端 (手机竖屏) 严谨几何对齐修复
+   ========================================================= */
 @media (max-width: 768px) {
     .installation-section {
-        padding: 10px 12px 40px;
+        padding: 10px 16px 40px;
     }
+
+    .stage-container {
+        padding-bottom: 40px;
+    }
+
+    /* 移动端左侧机械机身等比微调 */
+    .intake-apparatus {
+        width: 72px;
+    }
+
+    .geometric-shards {
+        width: 72px;
+        top: -20px;
+    }
+
+    .hopper-top {
+        width: 72px;
+        height: 14px;
+    }
+
+    .machine-neck {
+        width: 38px;
+        height: 12px;
+    }
+
+    .machine-base {
+        width: 48px;
+        height: 44px;
+    }
+
+    /* 出料口高度严格匹配移动端字块 (44px) 并贴合导轨 (bottom: 0) */
+    .output-gate {
+        height: 44px;
+        bottom: 0px;
+    }
+
+    /* 
+       滑轨容器基准修正：
+       容器高度 44px，向上完全抬升 44px (top: -44px)，
+       让方块的 bottom: 0 严丝合缝贴在 4px 履带上表面
+    */
+    .track-runway {
+        height: 44px;
+        top: -44px;
+        left: 2px;
+    }
+
+    /* 移动端字块：44×44px，底边贴轨 */
     .word-block {
         width: 44px;
         height: 44px;
         font-size: 18px;
+        bottom: 0 !important;
     }
-    .track-runway {
-        top: -45px;
+
+    /* 移动端左右 [X] 轮轴微调居中 */
+    .wheel-hub {
+        width: 18px;
+        height: 18px;
+        top: -7px;
+    }
+    .wheel-hub svg {
+        width: 14px;
+        height: 14px;
     }
 }
