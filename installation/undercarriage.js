@@ -1,8 +1,8 @@
 /* =========================================================
-   INSTALLATION: INDUSTRIAL METABOLISM CONVEYOR (V2 修复版)
-   - 彻底修复方块重叠：严格的物理排队，间距均匀紧凑 (~14px)
-   - 彻底修复下坠方向：在最右侧原位下栽，绝不再瞬移回左边
-   - 出字速度加倍：流畅工业流水线
+   INSTALLATION: INDUSTRIAL METABOLISM CONVEYOR
+   - 随笔随机抽取（每句播完后随机换下一句，且不与上一句重复）
+   - 句与句之间保留自然的输送间隙
+   - 严格物理排队防重叠、右端原地重力直坠消亡
    ========================================================= */
 
 (function () {
@@ -20,6 +20,7 @@
         "手逐渐酸麻，举高俯拍到无法支撑，贴在胸膛上才能勉强把录像录完。",
         "新娘裙摆像妖怪般盘踞在床上，兄弟团撞门与粗鲁捣弄，结婚仪式充满了原始父权文化。",
         "侵入性就是一方在空间上侵入另一方，产生排异，在不断侵入中获得快感。",
+        "有些我能想得到的、做出来不会让我满意的想法，我不会去做。",
         "在我们的社会中，似乎男性生殖器代表着一种超越性，只要挂着一组就总能有底气。",
         "小时候暴雨天，猪肝色雨衣罩住全身，我看着地下如黑履带般的路面推断自己到哪了。",
         "我闭着眼置于一场冒险，感受重心的偏移和每一次转弯的强度，在脑内画一张地图。",
@@ -29,38 +30,57 @@
         "很刺激，有点酥麻抽离，挤出最后一点气时，一阵酸胀从胸腔顺着手臂传到掌心。"
     ];
 
-    // 将语料打散成连续字符流
-    const fullCharStream = rawEssays.join("   ").split("");
-
     const runway = document.getElementById("track-runway");
     const conveyor = document.getElementById("conveyor-assembly");
 
     if (!runway || !conveyor) return;
 
-    let charIndex = 0;
-    // 速度加倍：从 1.45 提升至 2.6 像素/帧
+    // 随机获取下一句的索引（排除当前句，防止连续出现同一句）
+    function getRandomIndex(excludeIdx) {
+        if (rawEssays.length <= 1) return 0;
+        let nextIdx;
+        do {
+            nextIdx = Math.floor(Math.random() * rawEssays.length);
+        } while (nextIdx === excludeIdx);
+        return nextIdx;
+    }
+
+    // 初始句子：第一句固定从核心宣言开始，之后进入全随机
+    let currentEssayIdx = 0;
+    let currentChars = rawEssays[currentEssayIdx].split("");
+    let charPointer = 0;
+    let sentenceCooldownGaps = 0; // 句与句之间的空白流送缓冲区
+
     const beltSpeed = 2.6;
     const blockWidth = 56;
-    const blockGap = 14; // 字与字之间的紧凑间隔 (14px)
+    const blockGap = 14; 
     const activeBlocks = [];
 
-    // 严谨出字机制：当最后一张牌移动了足够距离后才生产下一张，100% 杜绝重叠
     function trySpawnBlock() {
         if (activeBlocks.length > 0) {
             const lastBlock = activeBlocks[activeBlocks.length - 1];
-            // 上一个字块还没移开足够空间，不生成，防止任何挤压重叠
             if (lastBlock.posX < blockGap) {
-                return;
+                return; // 上一个方块尚未离开间距区，等待下一帧
             }
         }
 
-        const char = fullCharStream[charIndex];
-        charIndex = (charIndex + 1) % fullCharStream.length;
-
-        // 遇到空格只拉开距离，不生成实体方块
-        if (char === " ") {
+        // 如果处于两句之间的过渡留白，推迟 3 个身位的空白间隙
+        if (sentenceCooldownGaps > 0) {
+            sentenceCooldownGaps--;
             return;
         }
+
+        // 当前句子字数用完，随机抽取下一句
+        if (charPointer >= currentChars.length) {
+            currentEssayIdx = getRandomIndex(currentEssayIdx);
+            currentChars = rawEssays[currentEssayIdx].split("");
+            charPointer = 0;
+            sentenceCooldownGaps = 3; // 换句时自然留出一段空隙
+            return;
+        }
+
+        const char = currentChars[charPointer];
+        charPointer++;
 
         const block = document.createElement("div");
         block.className = "word-block";
@@ -76,10 +96,8 @@
 
     // 核心动画主循环
     function renderFrame() {
-        // 自适应获取当前屏幕下履带的最右侧边缘
         const terminalEdge = conveyor.clientWidth - 40;
 
-        // 尝试生成新字块
         trySpawnBlock();
 
         for (let i = activeBlocks.length - 1; i >= 0; i--) {
@@ -94,7 +112,6 @@
                     item.isFalling = true;
                     item.el.classList.add("falling");
 
-                    // 关键修复：锁定当前真实 X 坐标，让它在此处垂直下掉，绝不跳回左边！
                     const dropX = item.posX + 18;
                     item.el.style.transform = `translate3d(${dropX}px, 130px, 0) rotate(56deg)`;
 
